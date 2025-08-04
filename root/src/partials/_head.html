@@ -1,0 +1,68 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title><%= title %></title>
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="https://s3.amazonaws.com/chalkbeatgraphics/templates/favicon.png" />
+<link rel="icon" sizes="96x96" href="https://s3.amazonaws.com/chalkbeatgraphics/templates/favicon.png" />
+<link rel="icon" sizes="32x32" href="https://s3.amazonaws.com/chalkbeatgraphics/templates/favicon.png" />
+<link rel="icon" sizes="16x16" href="https://s3.amazonaws.com/chalkbeatgraphics/templates/favicon.png" />
+
+<!-- Safari, you're the worst -->
+<meta name='format-detection' content='telephone=no'>
+
+<!-- BEGIN TWITTER SUMMARY CARD -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= title %>">
+<meta name="twitter:site" content="@Chalkbeat">
+<meta name="twitter:url" content="<%= url %>">
+<meta name="twitter:image" content="<%= url + image %>">
+<meta name="twitter:description" content="<%= description %>">
+
+<!-- Social sharing meta -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:site_name" content="Chalkbeat">
+<meta property="og:url" content="<%= url %>">
+<meta property="og:image" content="<%= url + image %>">
+<meta property="og:description" content="<%= description %>">
+
+<!-- Google structured data -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "<%= url %>"
+  },
+  "headline": "<%= title %>",
+  "image": {
+    "@type": "ImageObject",
+    "url": "<%= url + image %>"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Chalkbeat Staff"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Chalkbeat",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "<%= url %>assets/logo.png",
+      "width": 2176,
+      "height": 725
+    }
+  },
+  "description": "<%= description %>",
+  "datePublished": "<%= new Date().toISOString() %>"
+}
+</script>
+
+  <!-- webfonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap">

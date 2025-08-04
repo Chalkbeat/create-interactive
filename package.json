@@ -1,0 +1,12 @@
+{
+  "name": "@civicnews/create-interactive",
+  "version": "1.0.0",
+  "bin": "create.js",
+  "main": "create.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chalkbeat/interactive-template.git"
+  },
+  "description": "Create a Civic News interactive with npm init",
+  "type": "module"
+}

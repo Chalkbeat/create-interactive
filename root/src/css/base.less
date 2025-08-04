@@ -1,0 +1,249 @@
+// Colors
+// Chalkbeat brand colors
+@cbLogo: #3666EC;
+@cbBureau: #03938F;
+// Votebeat colors
+@vbLogo: #7E509E;
+@vbBureau: #331B3D;
+// Healthbeat colors
+@hbLogo: #F25A4D;
+@hbBureau: #DD405E;
+
+
+// Primary colors
+@darker-gray: #222222;
+@dark-gray: #393939;
+@teal: #178287;
+
+@primary-color: @teal;
+
+// Secondary colors
+@yellow: #F4C96C;
+@blue: #268CBA;
+@peach: #F79C75;
+@purple: #BD75AC;
+
+// Extended colors
+@lighter-gray: #ECECEC;
+@light-gray: #DCDCDC;
+@gray: #828282;
+
+@light-teal: #9CD1D4;
+@dark-teal: #127479;
+
+@light-yellow: #F0DFBC;
+@dark-yellow: #AC8E4C;
+
+@light-peach: #F1CEBF;
+@dark-peach: #AE6E52;
+
+@light-purple: #DBC0D4;
+@dark-purple: #855279;
+
+@light-blue: #A1C8DA;
+@dark-blue: #1B6383;
+
+@dark-red: #AE5252;
+@red: #F77575;
+@light-red: #F1BFBF;
+
+@dark-green: #4A8B44;
+@green: #19AB76;
+@light-green: #A7DCBC;
+
+// export to custom props
+:root {
+  --darker-gray: #222222;
+  --dark-gray: #393939;
+  --teal: #178287;
+  --primary-color: var(--teal);
+  --yellow: #F4C96C;
+  --blue: #268CBA;
+  --peach: #F79C75;
+  --purple: #BD75AC;
+  --lighter-gray: #ECECEC;
+  --light-gray: #DCDCDC;
+  --gray: #828282;
+  --light-teal: #9CD1D4;
+  --dark-teal: #127479;
+  --light-yellow: #F0DFBC;
+  --dark-yellow: #AC8E4C;
+  --light-peach: #F1CEBF;
+  --dark-peach: #AE6E52;
+  --light-purple: #DBC0D4;
+  --dark-purple: #855279;
+  --light-blue: #A1C8DA;
+  --dark-blue: #1B6383;
+}
+
+// Font stacks
+@serif: "Crimson Pro", Times, serif;
+@sans: Figtree, Helvetica, Arial, sans-serif;
+
+// Media queries
+@mobile: ~"(max-width: 600px)";
+@tablet: ~"(max-width: 1100px)";
+@desktop: ~"(min-width: 601px)";
+
+//defensive coding
+* {
+  //border-box, you're the best
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+
+  //Safari, you're the worst
+  -webkit-tap-highlight-color: transparent;
+}
+
+//elements
+body {
+  padding: 0;
+  margin: 0;
+  //remove 300ms click delay in Safari, AKA still the worst
+  touch-action: manipulation;
+  font-family: @serif;
+  font-size: 21px;
+  line-height: 1.4;
+  color: @dark-gray;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  main {
+    flex: 1;
+  }
+}
+
+img, svg {
+  max-width: 100%;
+}
+
+h1 {
+  font-size: 44px;
+  font-family: @sans;
+
+  @media @mobile {
+    font-size: 34px;
+  }
+}
+
+h2 {
+  font-size: 30px;
+  font-family: @sans;
+  font-weight: normal;
+
+  @media @mobile {
+    font-size: 24px;
+  }
+}
+
+a, a:visited {
+  color: @teal;
+}
+
+a:hover, a:active, a:focus {
+  color: @teal;
+  border-bottom: none;
+}
+
+img:not([alt]) {
+  outline: 3px solid red;
+
+  [aria-hidden] &,
+  [role="img"] & {
+    outline: none;
+  }
+}
+
+/* Chalkbeat header */
+
+header.chalkbeat {
+  background: black;
+  color: white;
+
+  .cb__justified {
+    padding: 16px;
+    display: flex;
+    margin: auto;
+    max-width: 1100px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cb__logo {
+    max-height: 60px;
+
+    @media @mobile {
+      max-width: 120px;
+    }
+  }
+
+  .cb__buttons {
+    a {
+      display: inline-block;
+      padding: 10px 16px;
+      color: @darker-gray;
+      text-decoration: none;
+      background: @teal;
+      font-family: @sans;
+      font-size: 19px;
+      font-weight: bold;
+
+      @media @mobile {
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+
+    svg {
+      height: 2ch;
+      vertical-align: baseline;
+      display: inline-block;
+    }
+
+    .cb__newsletters {
+      background: @purple;
+      margin-right: 8px;
+    }
+
+    .cb__donate {
+      background: @yellow;
+    }
+  }
+}
+
+/* Chalkbeat footer */
+
+footer.chalkbeat {
+  background: black;
+  color: white;
+
+  .cb__justified {
+    max-width: 1100px;
+    margin: auto;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media @mobile {
+      display: block;
+      text-align: center;
+    }
+  }
+
+  .cb__logo {
+    max-width: 120px;
+    margin-right: 20px;
+  }
+
+  .cb__links {
+    font-size: 14px;
+
+    a {
+      margin: 0 1em;
+    }
+  }
+}

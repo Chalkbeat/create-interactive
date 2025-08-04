@@ -1,0 +1,31 @@
+{
+  "s3": {
+    "stage": {
+      "bucket": "test.chalkbeat.org",
+      "path": "<%= app_name %>"
+    },
+    "live": {
+      "bucket": "projects.chalkbeat.org",
+      "path": "<%= year %>/<%= app_name %>"
+    }
+  },
+  "styles": {
+    "src/css/seed.less": "build/style.css"
+  },
+  "scripts": {
+    "src/js/main.js": "build/app.js"
+  },
+  "title": "",
+  "description": "",
+  "url": "",
+  "image": "assets/logo.png",
+  "analytics": {
+    "topicIDs": [],
+    "primaryTopic": "",
+    "secondaryTopics": []
+  },
+  "sheets": [],
+  "docs": {},
+  "embedded": true,
+  "production": false
+}
