@@ -1,7 +1,7 @@
-{%= app_name %}
+<%= app_name %>
 ======================================================
 
-This news app is built on our `interactive template <https://github.com/chalkbeat/interactive-template>`_. Check the readme for that template for more details about the structure and mechanics of the app, as well as how to start your own project.
+This news app is built on our `interactive template <https://github.com/chalkbeat/create-interactive>`_. Check the readme for that template for more details about the structure and mechanics of the app, as well as how to start your own project.
 
 Getting started
 ---------------
@@ -9,20 +9,20 @@ Getting started
 To run this project you will need:
 
 * Node installed (preferably with NVM or another version manager)
-* The Grunt CLI (install globally with ``npm i -g grunt-cli``)
+* The Heist CLI (install globally with ``npm i -g thomaswilburn/heist``)
 * Git
 
 With those installed, you can then set the project up using your terminal:
 
-#. Pull the code - ``git clone git@github.com:chalkbeat/{%= app_name %}``
-#. Enter the project folder - ``cd {%= app_name %}``
+#. Pull the code - ``git clone git@github.com:chalkbeat/<%= app_name %>``
+#. Enter the project folder - ``cd <%= app_name %>``
 #. Install dependencies from NPM - ``npm install``
-#. Start the server - ``grunt``
+#. Start the server - ``heist``
 
 Running tasks
 -------------
 
-Like all interactive-template projects, this application uses the Grunt task runner to handle various build steps and deployment processes. To see all tasks available, run ``grunt --help``. ``grunt`` by itself will run the "default" task, which processes data and starts the development server. However, you can also specify a list of steps as arguments to Grunt, and it will run those in sequence. For example, you can just update the JavaScript and CSS assets in the build folder by using ``grunt bundle less``.
+Like all interactive-template projects, this application uses the Heist task runner to handle various build steps and deployment processes. To see all tasks available, run ``heist --list``. ``heist`` by itself will run the "default" task, which processes data and starts the development server. However, you can also specify a list of steps as arguments to Heist, and it will run those in sequence. For example, you can just update the JavaScript and CSS assets in the build folder by using ``heist bundle less``.
 
 Common tasks that you may want to run include:
 

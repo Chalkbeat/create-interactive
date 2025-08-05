@@ -45,7 +45,8 @@ var context = {
 var templated = {
   "_gitignore": ".gitignore",
   "_package.json": "package.json",
-  "project.json": "project.json"
+  "project.json": "project.json",
+  "readme.rst": "readme.rst"
 }
 
 console.log(`Copying standard project files...`)
