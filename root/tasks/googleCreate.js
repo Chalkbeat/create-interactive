@@ -20,8 +20,9 @@ export default function(heist) {
 
   heist.defineTask("google-create", "Create a linked Drive file (i.e., Google Sheets or Docs)", async function() {
 
-    var config = readJSON("project.json");
-    var pkg = readJSON("package.json");
+    var config = await readJSON("project.json");
+    var pkg = await readJSON("package.json");
+
     var auth = null;
     try {
       auth = authenticate();
