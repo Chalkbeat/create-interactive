@@ -1,4 +1,3 @@
-import * as google from "@googleapis/sheets";
 import opn from "opn";
 
 import http from "node:http";
@@ -8,7 +7,9 @@ import fs from "node:fs";
 
 var tokenLocation = path.join(os.homedir(), ".google_oauth_token");
 
-export function authenticate() {
+export async function authenticate() {
+  var google = await import("@googleapis/sheets");
+
   var tokens = fs.readFileSync(path.join(os.homedir(), ".google_oauth_token"), "utf-8");
   tokens = JSON.parse(tokens);
   var auth = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CONSUMER_SECRET);
@@ -24,13 +25,15 @@ export function authenticate() {
 
 export default function task(heist) {
 
-  heist.defineTask("google-auth", "Authenticates with Google for document download", function() {
+  heist.defineTask("google-auth", "Authenticates with Google for document download", async function() {
+
+    var google = await import("@googleapis/sheets");
 
     var clientID = process.env.GOOGLE_OAUTH_CLIENT_ID;
     var secret = process.env.GOOGLE_OAUTH_CONSUMER_SECRET;
 
     var client = new google.auth.OAuth2(clientID, secret, "http://localhost:8000/authenticate/");
-    google.options({ auth: client });
+    // google.options({ auth: client });
 
     var scopes = [
       "https://www.googleapis.com/auth/drive",
@@ -58,7 +61,7 @@ export default function task(heist) {
 
     var onAuthenticated = async function(request, response) {
       var requestURL = request.url[0] == "/" ? "localhost:8000" + request.url : request.url;
-      var query = new url.URL(requestURL).searchParams;
+      var query = new URL(requestURL).searchParams;
       var code = query.get("code");
       if (!code) return;
       try {
@@ -69,8 +72,7 @@ export default function task(heist) {
       } catch (err) {
         response.end(err);
       }
-
-      done();
+      process.exit();
     };
 
     var server = http.createServer(onRequest);

@@ -1,17 +1,19 @@
 
 import path from "node:path";
 import fs from "node:fs/promises"
+import { parseArgs } from "node:util";
 
-import * as s3 from "./lib/s3.js";
 import project from "../project.json" with { type: "json" };
 import mime from "mime";
 
 export default function(heist) {
 
+  var s3;
+
   var ls = async function(dir) {
     var stats = [];
     try {
-      var matching = grunt.file.expand({ cwd: "./src/assets/synced", filter: "isFile" }, ["**/*"]);
+      var matching = await heist.find("src/assets/synced/**/*");
       // add modification time and size
       for (var m of matching) {
         var s = await fs.stat(path.join(dir, m));
@@ -112,15 +114,17 @@ export default function(heist) {
       await Promise.all(slice.map(uploadFile));
     }
   }
-
   heist.defineTask("sync", async function(target = "stage") {
+
+    s3 = await import("./lib/s3.js");
+
+    var args = parseArgs({ strict: false }).values;
+
     var config = project.s3[target];
-    var options = grunt.option.keys();
-    var direction = options.includes("push") ? "push" : options.includes("pull") ? "pull" : false;
+    var direction = args.push ? "push" : args.pull ? "pull" : false;
 
     if (target == "live" && !project.production) {
-      var checklist = grunt.file.read("tasks/checklist.txt");
-      grunt.fail.fatal(checklist);
+      return console.error("You're trying to sync to live, but project.json doesn't have the production flag set.");
     } else {
       config = project.s3[target];
     }

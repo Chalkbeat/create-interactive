@@ -4,16 +4,21 @@ Run the PostCSS compiler against seed.css and output to style.css.
 
 */
 
-import postcss from "postcss";
-import variables from "postcss-simple-vars";
-import atImport from "postcss-import";
-import env from "postcss-preset-env";
 import fs from "node:fs/promises";
 import path from "node:path";
+
+var lazy = async (mods) => {
+  return Promise.all(mods.map(async (specifier) => {
+    var pkg = await import(specifier);
+    return pkg.default;
+  }));
+}
 
 export default function(heist) {
 
   heist.defineTask("css", "Compile styles from src/css/seed.css", async function() {
+
+    var [ postcss, variables, atImport, env ] = await lazy("postcss postcss-simple-vars postcss-import postcss-preset-env".split(" "));
 
     var { default: config } = await import("../project.json", { with: { type: "json" } });
 

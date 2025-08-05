@@ -9,11 +9,8 @@ check for existing data to merge--it does a fresh pull every time.
 import project from "../project.json" with { type: "json" };
 import os from "node:os";
 import path from "node:path";
-import * as google from "@googleapis/sheets";
 import { authenticate } from "./googleAuth.js";
 import fs from "node:fs/promises";
-
-var api = google.sheets("v4");
 
 var camelCase = function(str) {
   return str.replace(/[^\w]+(\w)/g, function(all, match) {
@@ -44,9 +41,12 @@ export default function(heist) {
 
   heist.defineTask("sheets", "Downloads from Google Sheets -> JSON", async function() {
 
+    var google = await import("@googleapis/sheets");
+    var api = google.sheets("v4");
+
     var auth = null;
     try {
-      auth = authenticate();
+      auth = await authenticate();
     } catch (err) {
       console.log("No access token from ~/.google_oauth_token, private spreadsheets will be unavailable.", err);
     };

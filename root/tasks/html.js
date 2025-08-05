@@ -1,21 +1,23 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { compile } from "./lib/template.js";
-import { HtmlRenderer, Parser } from "commonmark";
-import typogr from "typogr";
-
-var writer = new HtmlRenderer();
-var reader = new Parser();
-
-//monkey-patch writer to handle typographical entities
-var escape = writer.escape;
-writer.escape = function(str) {
-  return escape(str, true);
-};
 
 export default function(heist) {
 
   heist.defineTask("html", "Generate HTML files", async function(target, context) {
+
+    var typogr = await import("typogr");
+
+    var { HtmlRenderer, Parser } = await import("commonmark");
+
+    var writer = new HtmlRenderer();
+    var reader = new Parser();
+
+    //monkey-patch writer to handle typographical entities
+    var escape = writer.escape;
+    writer.escape = function(str) {
+      return escape(str, true);
+    };
 
     var process = function(source, data, filename) {
       var fn = compile(source, { sourceURL: filename });

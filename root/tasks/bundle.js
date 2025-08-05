@@ -1,14 +1,8 @@
 /*
 Build a bundled app.js file using browserify
 */
-import { rollup } from "rollup";
-import terser from "@rollup/plugin-terser";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
-import commonJS from "@rollup/plugin-commonjs";
-// import less from "less";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { importText, importLess } from "./lib/rollup-plugins.js";
 import config from "../project.json" with { type: "json" };
 
 var cache = null;
@@ -16,6 +10,13 @@ var cache = null;
 export default function(heist) {
 
   heist.defineTask("bundle", "Build app.js using browserify", async function(mode, context) {
+
+    var { rollup } = await import("rollup");
+    var { default: terser } = await import("@rollup/plugin-terser");
+    var { nodeResolve } = await import("@rollup/plugin-node-resolve");
+    var { default: commonJS } = await import("@rollup/plugin-commonjs");
+    var { importText } = await import("./lib/rollup-plugins.js");
+
     //run in dev mode unless otherwise specified
     mode = mode || "dev";
 

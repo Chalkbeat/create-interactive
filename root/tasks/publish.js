@@ -4,8 +4,6 @@ import util from "node:util";
 import mime from "mime";
 import { styleText } from "node:util";
 
-import * as s3 from "./lib/s3.js";
-
 // create web-style paths from Windows path strings
 var join = (...parts) => path.join(...parts).replace(/\\/g, "/");
 
@@ -56,6 +54,8 @@ export default function (heist) {
     "publish",
     "Pushes the build folder to S3",
     async function (deploy) {
+
+      var s3 = await import("./lib/s3.js");
 
       deploy = deploy || "stage";
 

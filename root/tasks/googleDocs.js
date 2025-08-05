@@ -1,4 +1,3 @@
-import * as google from "@googleapis/docs";
 import os from "node:os";
 import path from "node:path";
 import { authenticate } from "./googleAuth.js";
@@ -14,9 +13,11 @@ var formatters = {
 export default function(heist) {
 
   heist.defineTask("docs", "Save Google Docs into the data folder", async function () {
+    var google = await import("@googleapis/docs");
+
     var auth = null;
     try {
-      auth = authenticate();
+      auth = await authenticate();
     } catch (err) {
       console.log(err);
       return console.error(

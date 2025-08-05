@@ -1,4 +1,3 @@
-import * as google from "@googleapis/drive";
 import { authenticate } from "./googleAuth.js";
 import opn from "opn";
 import fs from "node:fs/promises";
@@ -20,12 +19,14 @@ export default function(heist) {
 
   heist.defineTask("google-create", "Create a linked Drive file (i.e., Google Sheets or Docs)", async function() {
 
+    var google = await import("@googleapis/drive");
+
     var config = await readJSON("project.json");
     var pkg = await readJSON("package.json");
 
     var auth = null;
     try {
-      auth = authenticate();
+      auth = await authenticate();
     } catch (err) {
       console.log(err);
       return console.error("Couldn't load access token for Docs, try running `grunt google-auth`");

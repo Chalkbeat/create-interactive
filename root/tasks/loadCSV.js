@@ -5,13 +5,14 @@ Will use cached data if it hasn't changed since the last run.
 
 */
 
-import { parse } from "csv-parse";
 import path from "node:path";
 import fs from "node:fs/promises";
 
 export default function(heist) {
 
   heist.defineTask("csv", "Convert CSV to JSON and load onto grunt.data", async function() {
+
+    var { parse } = await import("csv-parse");
 
     var files = await heist.find("data/**/*.csv");
 

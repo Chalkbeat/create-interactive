@@ -1,8 +1,8 @@
-import Server from "@11ty/eleventy-dev-server";
-
 export default async function(heist) {
 
   heist.defineTask("serve", "Run an 11ty dev server and enable watch tasks", async function(target, context) {
+    var Server = await import("@11ty/eleventy-dev-server");
+
     var server = new Server("11ty", "build", {
       watch: "src",
       logger: {
