@@ -40,16 +40,25 @@ Getting Started
 ---------------
 
 For our first project, we'll do something pretty simple. Open a terminal,
-make a new folder for your project, and run ``npm init @civicnews/interactive``:
+make a new folder for your project, and run ``npm init chalkbeat/interactive``:
 
 .. code:: sh
 
     cd ~
     mkdir example-app
     cd example-app
-    npm init @civicnews/interactive
+    npm init chalkbeat/interactive
 
-The scaffolding wizard will pull some information from the environment, then
+It is worth noting what this is precisely doing: when called with
+an "initializer," ``npm init`` will go out and download the module, then run
+its default executable (the ``bin`` field of its package.json file). In this
+case, we are using a Git endpoint, not an NPM target (they look similar, but
+NPM users have an ``@`` in front, whereas a slash-delimited package name is a
+GitHub username/repo). We have chosen this method over a "real" NPM package
+because it allows us to iterate much faster as a team, instead of needing to
+bump the package version and republish every time there's a change.
+
+The scaffolding script will pull some information from the environment, then
 set up some folders and source files for you in the current directory (the one
 seen in the output of ``pwd``), and install the NPM modules needed for this
 project. After npm hands you back to the prompt, type ``heist`` at

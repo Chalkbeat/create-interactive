@@ -10,7 +10,7 @@
     }
   },
   "styles": {
-    "src/css/seed.less": "build/style.css"
+    "src/css/seed.css": "build/style.css"
   },
   "scripts": {
     "src/js/main.js": "build/app.js"
@@ -19,13 +19,7 @@
   "description": "",
   "url": "",
   "image": "assets/logo.png",
-  "analytics": {
-    "topicIDs": [],
-    "primaryTopic": "",
-    "secondaryTopics": []
-  },
   "sheets": [],
   "docs": {},
-  "embedded": true,
   "production": false
 }

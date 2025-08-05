@@ -4,7 +4,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout, cwd } from "node:process";
-import compile from "./root/tasks/lib/template.js";
+import { compile } from "./root/tasks/lib/template.js";
 import { exec } from "node:child_process";
 
 function run(cmd, print) {
@@ -65,7 +65,7 @@ console.log(`Writing customized files...`)
 for (var [ source, dest ] of Object.entries(templated)) {
   var contents = await fs.readFile(path.join(root, source), "utf-8");
   var template = compile(contents);
-  var output = template(context);
+  var output = await template(context);
   await fs.writeFile(dest, output);
   console.log(`  - wrote ${dest}`)
 }

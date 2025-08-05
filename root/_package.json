@@ -26,10 +26,5 @@
     "rollup": "^4.42.0",
     "typogr": "^0.6.4"
   },
-  "browserify": {
-    "transform": [
-      "./tasks/lib/browserify-less",
-      "./tasks/lib/browserify-text"
-    ]
-  }
+  "type": "module"
 }
