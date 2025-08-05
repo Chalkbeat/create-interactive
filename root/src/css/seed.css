@@ -1,9 +1,1 @@
 @import "./base.css";
-
-body {
-  color: red;
-
-  @media $mobile {
-    color: green;
-  }
-}
