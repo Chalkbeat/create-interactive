@@ -114,7 +114,7 @@ export default function(heist) {
       await Promise.all(slice.map(uploadFile));
     }
   }
-  heist.defineTask("sync", async function(target = "stage") {
+  heist.defineTask("sync", "Synchronize large files with S3", async function(target = "stage") {
 
     s3 = await import("./lib/s3.js");
 
