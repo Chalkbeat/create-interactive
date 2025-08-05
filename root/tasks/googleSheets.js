@@ -11,6 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import * as google from "@googleapis/sheets";
 import { authenticate } from "./googleAuth.js";
+import fs from "node:fs/promises";
 
 var api = google.sheets("v4");
 
@@ -47,13 +48,13 @@ export default function(heist) {
     try {
       auth = authenticate();
     } catch (err) {
-      console.log("No access token from ~/.google_oauth_token, private spreadsheets will be unavailable.", err)
+      console.log("No access token from ~/.google_oauth_token, private spreadsheets will be unavailable.", err);
     };
 
     var sheetKeys = project.sheets;
 
     if (!sheetKeys || !sheetKeys.length) {
-      return grunt.fail.fatal("You must specify a spreadsheet key in project.json or auth.json!");
+      return console.error("You must specify a spreadsheet key in project.json!");
     }
 
     var bookRequests = sheetKeys.map(async function(spreadsheetId) {
@@ -119,7 +120,7 @@ export default function(heist) {
         }
         var filename = `data/${sheet.properties.title.replace(/[\s\/]+/g, "_")}.sheet.json`;
         console.log(`Saving sheet to ${filename}`);
-        grunt.file.write(filename, JSON.stringify(out, null, 2));
+        await fs.writeFile(filename, JSON.stringify(out, null, 2));
       });
 
       await Promise.all(sheetRequests);

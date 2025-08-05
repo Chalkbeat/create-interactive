@@ -4,14 +4,14 @@ import opn from "opn";
 import http from "node:http";
 import os from "node:os";
 import path from "node:path";
-import fs from "node:fs/promises";
+import fs from "node:fs";
 
 var tokenLocation = path.join(os.homedir(), ".google_oauth_token");
 
 export function authenticate() {
   var tokens = fs.readFileSync(path.join(os.homedir(), ".google_oauth_token"), "utf-8");
   tokens = JSON.parse(tokens);
-  auth = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CONSUMER_SECRET);
+  var auth = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CONSUMER_SECRET);
   auth.setCredentials(tokens);
 
   auth.on("tokens", function(update) {
@@ -64,7 +64,7 @@ export default function task(heist) {
       try {
         var token = await client.getToken(code);
         var tokens = token.tokens;
-        grunt.file.write(tokenLocation, JSON.stringify(tokens, null, 2));
+        fs.writeFileSync(tokenLocation, JSON.stringify(tokens, null, 2));
         response.end("Authenticated, saving token to your home directory");
       } catch (err) {
         response.end(err);
