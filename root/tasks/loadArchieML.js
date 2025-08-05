@@ -3,27 +3,28 @@ Process text files as ArchieML
 Anything that has a .txt extension in /data will be loaded
 */
 
-var path = require("path");
-var betty = require("@nprapps/betty");
+import fs from "node:fs/promises";
+import path from "node:path";
+import betty from "@nprapps/betty";
 
-module.exports = function(grunt) {
+export default function(heist) {
 
-  grunt.registerTask("archieml", "Loads ArchieML files from data/*.txt", function() {
+  heist.defineTask("archieml", "Loads ArchieML files from data/*.txt", async function(target, context) {
 
-    grunt.task.requires("state");
-    grunt.data.archieml = {};
+    var archieml = {};
+    var files = await heist.find("data/*.txt");
 
-    var files = grunt.file.expand("data/*.txt");
-
-    files.forEach(function(f) {
+    for (var f of files) {
       var name = path.basename(f).replace(/(\.docs)?\.txt$/, "");
-      var contents = grunt.file.read(f);
+      var contents = await fs.readFile(f, "utf-8");
 
       var parsed = betty.parse(contents, {
         onFieldName: t => t[0].toLowerCase() + t.slice(1)
       });
-      grunt.data.archieml[name] = parsed;
-    });
+      archieml[name] = parsed;
+    }
+
+    context.archieml = archieml;
 
   });
 

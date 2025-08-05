@@ -1,12 +1,12 @@
 
-var path = require("path");
-var fs = require("fs").promises;
+import path from "node:path";
+import fs from "node:fs/promises"
 
-var s3 = require("./lib/s3");
-var project = require("../project.json");
-var mime = require("mime");
+import * as s3 from "./lib/s3.js";
+import project from "../project.json" with { type: "json" };
+import mime from "mime";
 
-module.exports = function(grunt) {
+export default function(heist) {
 
   var ls = async function(dir) {
     var stats = [];
@@ -113,8 +113,7 @@ module.exports = function(grunt) {
     }
   }
 
-  grunt.registerTask("sync", function(target = "stage") {
-    var done = this.async();
+  heist.defineTask("sync", async function(target = "stage") {
     var config = project.s3[target];
     var options = grunt.option.keys();
     var direction = options.includes("push") ? "push" : options.includes("pull") ? "pull" : false;
@@ -126,6 +125,6 @@ module.exports = function(grunt) {
       config = project.s3[target];
     }
 
-    sync(config, direction).then(done);
+    await sync(config, direction);
   });
 }

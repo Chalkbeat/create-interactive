@@ -1,9 +1,9 @@
-var fs = require("fs").promises;
-var path = require("path");
+import fs from "node:fs/promises"
+import path from "node:path";
 
 // text import plugin
 var textExtensions = new Set([".svg", ".html", ".txt", ".glsl"]);
-var importText = function() {
+export function importText() {
   return {
     name: "import-text",
     async load(id) {
@@ -16,8 +16,48 @@ var importText = function() {
   }
 };
 
+var resolve = import.meta.resolve;
+
+var npmImporter = {
+  install: function(less, pluginManager) {
+
+    var FileManager = function() {};
+    FileManager.prototype = new less.FileManager();
+    FileManager.prototype.supports = function(file, dir) {
+      return file.indexOf("npm://") == 0;
+    };
+    FileManager.prototype.supportsSync = FileManager.prototype.supports;
+    FileManager.prototype.resolve = function(file) {
+      file = file.replace("npm://", "");
+      try {
+        var resolved = resolve(file, {
+          extensions: [".less", ".css"],
+          packageFilter: function(pkg) { 
+            if (pkg.style) pkg.main = pkg.style;
+            return pkg;
+          }
+        });
+        return resolved;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    FileManager.prototype.loadFile = function(url, dir, options, env) {
+      var filename = this.resolve(url);
+      return less.FileManager.prototype.loadFile.call(this, filename, "", options, env);
+    };
+    FileManager.prototype.loadFileSync = function(url, dir, options, env) {
+      var filename = this.resolve(url);
+      return less.FileManager.prototype.loadFileSync.call(this, filename, "", options, env);
+    };
+
+    pluginManager.addFileManager(new FileManager());
+  },
+  minVersion: [2, 1, 1]
+};
+
 var cssExtensions = new Set([".css", ".less"]);
-var importLESS = function() {
+export function importLess() {
   return {
     name: "import-less",
     async load(id) {
@@ -37,5 +77,3 @@ document.head.appendChild(style);`;
     }
   }
 };
-
-module.exports = { importText, importLESS };

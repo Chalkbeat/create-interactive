@@ -7,10 +7,10 @@ Async wrapper for S3
 
 */
 
-var { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } = require("@aws-sdk/client-s3");
-var fs = require("fs");
-var mime = require("mime");
-var path = require("path");
+import { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import fs from "node:fs";
+import path from "node:path";
+import mime from "mime";
 
 var region = process.env.AWS_DEFAULT_REGION || "us-east-1";
 var credentials = {
@@ -20,14 +20,14 @@ var credentials = {
 };
 var s3 = new S3Client({ credentials, region });
 
-var upload = async function (object) {
+export async function upload(object) {
   var result = await s3.send(new PutObjectCommand(object));
   // console.log(`Uploaded ${(object.Body.length / 1024) | 0}KB to s3://${object.Bucket}/${object.Key}`);
   return object.Key;
 };
 
 // object bodies are streams, we have to grab and combine them
-var captureStream = function(stream) {
+function captureStream(stream) {
   return new Promise((ok, fail) => {
     var chunks = [];
     stream.on("data", chunk => chunks.push(chunk));
@@ -36,7 +36,7 @@ var captureStream = function(stream) {
   });
 };
 
-var download = async function (Bucket, Key) {
+export async function download(Bucket, Key) {
   var data = await s3.send(new GetObjectCommand({ Bucket, Key }));
   // console.log(data);
   var buffer = await captureStream(data.Body);
@@ -45,7 +45,7 @@ var download = async function (Bucket, Key) {
 };
 
 // get a single page of results from S3
-var getRemote = async function (Bucket, Prefix, Marker = null) {
+async function getRemote(Bucket, Prefix, Marker = null) {
   var results = await s3.send(new ListObjectsV2Command({ Bucket, Prefix, Marker }));
   var items = (results.Contents || []).map(function (obj) {
     return {
@@ -59,7 +59,7 @@ var getRemote = async function (Bucket, Prefix, Marker = null) {
   return { items, next };
 };
 
-var ls = async function (bucket, path) {
+export async function ls(bucket, path) {
   var response = null;
   var list = [];
   do {
@@ -69,5 +69,3 @@ var ls = async function (bucket, path) {
   } while (response.next);
   return list;
 };
-
-module.exports = { upload, download, ls };

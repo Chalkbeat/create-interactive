@@ -1,20 +1,18 @@
-var google = require("@googleapis/drive");
-var { authenticate } = require("./googleAuth");
-var opn = require("opn");
+import * as google from "@googleapis/drive";
+import { authenticate } from "./googleAuth.js";
+import opn from "opn";
 
-module.exports = function(grunt) {
+export default function(heist) {
 
   var mimes = {
     sheets: "application/vnd.google-apps.spreadsheet",
     docs: "application/vnd.google-apps.document"
   };
 
-  grunt.registerTask("google-create", "Create a linked Drive file (i.e., Google Sheets or Docs)", async function() {
-
-    var done = this.async();
+  heist.defineTask("google-create", "Create a linked Drive file (i.e., Google Sheets or Docs)", async function() {
 
     var config = grunt.file.readJSON("project.json");
-    var package = grunt.file.readJSON("package.json");
+    var pkg = grunt.file.readJSON("package.json");
     var auth = null;
     try {
       auth = authenticate();
@@ -28,7 +26,7 @@ module.exports = function(grunt) {
     if (!type || !(type in mimes)) return grunt.fail.warn("Please specify --type=sheets or --type=docs");
     var mimeType = mimes[type];
 
-    var name = grunt.option("name") || package.name;
+    var name = grunt.option("name") || pkg.name;
 
     var result = await drive.files.create({ resource: { name, mimeType }});
     var file = result.data;
@@ -42,8 +40,6 @@ module.exports = function(grunt) {
     grunt.file.write("project.json", JSON.stringify(config, null, 2));
 
     opn(`https://drive.google.com/open?id=${file.id}`)
-
-    done();
 
   });
 };

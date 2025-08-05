@@ -1,28 +1,22 @@
-/*
+import fs from "node:fs/promises";
+import path from "node:path";
 
-Loads the project JSON file, as well as any matching files in the /json
-folder, and attaches it to the grunt.data object as grunt.data.json.
+export default function(heist) {
 
-*/
+  heist.defineTask("json", "Import JSON files from the data folder", async function(target, context) {
+    var files = await heist.find("data/**/*.json");
+    // also load the project.json file
+    var { default: project } = await import("../project.json", { with: { type: "json" } });
+    var json = { project };
+    for (var f of files) {
+      var [ slug ] = path.basename(f).split(".");
+      var contents = await fs.readFile(f, "utf-8");
+      var parsed = JSON.parse(contents);
+      console.log(`Loaded ${f} as json.${slug}`);
+      json[slug] = parsed;
+    }
 
-var path = require("path");
-
-module.exports = function(grunt) {
-
-  grunt.registerTask("json", "Load JSON for templating", function() {
-
-    var files = grunt.file.expand(["project.json", "package.json", "data/**/*.json"]);
-
-    grunt.task.requires("state");
-
-    grunt.data.json = {};
-
-    files.forEach(function(file) {
-      var json = grunt.file.readJSON(file);
-      var name = path.basename(file).replace(/(\.sheet)?\.json$/, "");
-      grunt.data.json[name] = json;
-    });
-
+    context.json = json;
   });
 
 }

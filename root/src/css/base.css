@@ -1,112 +1,91 @@
-// Colors
-// Chalkbeat brand colors
-@cbLogo: #3666EC;
-@cbBureau: #03938F;
-// Votebeat colors
-@vbLogo: #7E509E;
-@vbBureau: #331B3D;
-// Healthbeat colors
-@hbLogo: #F25A4D;
-@hbBureau: #DD405E;
-
-
-// Primary colors
-@darker-gray: #222222;
-@dark-gray: #393939;
-@teal: #178287;
-
-@primary-color: @teal;
-
-// Secondary colors
-@yellow: #F4C96C;
-@blue: #268CBA;
-@peach: #F79C75;
-@purple: #BD75AC;
-
-// Extended colors
-@lighter-gray: #ECECEC;
-@light-gray: #DCDCDC;
-@gray: #828282;
-
-@light-teal: #9CD1D4;
-@dark-teal: #127479;
-
-@light-yellow: #F0DFBC;
-@dark-yellow: #AC8E4C;
-
-@light-peach: #F1CEBF;
-@dark-peach: #AE6E52;
-
-@light-purple: #DBC0D4;
-@dark-purple: #855279;
-
-@light-blue: #A1C8DA;
-@dark-blue: #1B6383;
-
-@dark-red: #AE5252;
-@red: #F77575;
-@light-red: #F1BFBF;
-
-@dark-green: #4A8B44;
-@green: #19AB76;
-@light-green: #A7DCBC;
-
-// export to custom props
+/* export to custom props */
 :root {
+  /* Colors */
+  /* Chalkbeat brand colors */
+  --cbLogo: #3666EC;
+  --cbBureau: #03938F;
+  /* Votebeat colors */
+  --vbLogo: #7E509E;
+  --vbBureau: #331B3D;
+  /* Healthbeat colors */
+  --hbLogo: #F25A4D;
+  --hbBureau: #DD405E;
+
+
+  /* Primary colors */
   --darker-gray: #222222;
   --dark-gray: #393939;
   --teal: #178287;
+
   --primary-color: var(--teal);
+
+  /* Secondary colors */
   --yellow: #F4C96C;
   --blue: #268CBA;
   --peach: #F79C75;
   --purple: #BD75AC;
+
+  /* Extended colors */
   --lighter-gray: #ECECEC;
   --light-gray: #DCDCDC;
   --gray: #828282;
+
   --light-teal: #9CD1D4;
   --dark-teal: #127479;
+
   --light-yellow: #F0DFBC;
   --dark-yellow: #AC8E4C;
+
   --light-peach: #F1CEBF;
   --dark-peach: #AE6E52;
+
   --light-purple: #DBC0D4;
   --dark-purple: #855279;
+
   --light-blue: #A1C8DA;
   --dark-blue: #1B6383;
+
+  --dark-red: #AE5252;
+  --red: #F77575;
+  --light-red: #F1BFBF;
+
+  --dark-green: #4A8B44;
+  --green: #19AB76;
+  --light-green: #A7DCBC;
 }
 
-// Font stacks
-@serif: "Crimson Pro", Times, serif;
-@sans: Figtree, Helvetica, Arial, sans-serif;
+/* Font stacks */
+--serif: "Crimson Pro", Times, serif;
+--sans: Figtree, Helvetica, Arial, sans-serif;
 
-// Media queries
-@mobile: ~"(max-width: 600px)";
-@tablet: ~"(max-width: 1100px)";
-@desktop: ~"(min-width: 601px)";
+/* Media queries */
+/* Replace these variables with better syntax when it becomes available */
+$mobile: (max-width: 600px);
+$tablet: (max-width: 1100px);
+$desktop: (min-width: 601px);
 
-//defensive coding
+/*defensive coding */
 * {
-  //border-box, you're the best
+  /*border-box, you're the best */
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
 
-  //Safari, you're the worst
+  /*Safari, you're the worst */
   -webkit-tap-highlight-color: transparent;
 }
 
-//elements
+/*elements */
 body {
   padding: 0;
   margin: 0;
-  //remove 300ms click delay in Safari, AKA still the worst
+  /*remove 300ms click delay in Safari, AKA still the worst */
   touch-action: manipulation;
-  font-family: @serif;
+  font-family: var(--serif);
   font-size: 21px;
   line-height: 1.4;
-  color: @dark-gray;
+  color: var(--dark-gray);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -122,19 +101,19 @@ img, svg {
 
 h1 {
   font-size: 44px;
-  font-family: @sans;
+  font-family: var(--sans);
 
-  @media @mobile {
+  @media $mobile {
     font-size: 34px;
   }
 }
 
 h2 {
   font-size: 30px;
-  font-family: @sans;
+  font-family: var(--sans);
   font-weight: normal;
 
-  @media @mobile {
+  @media $mobile {
     font-size: 24px;
   }
 }
@@ -175,7 +154,7 @@ header.chalkbeat {
   .cb__logo {
     max-height: 60px;
 
-    @media @mobile {
+    @media $mobile {
       max-width: 120px;
     }
   }
@@ -184,14 +163,14 @@ header.chalkbeat {
     a {
       display: inline-block;
       padding: 10px 16px;
-      color: @darker-gray;
+      color: var(--darker-gray);
       text-decoration: none;
-      background: @teal;
-      font-family: @sans;
+      background: var(--teal);
+      font-family: var(--sans);
       font-size: 19px;
       font-weight: bold;
 
-      @media @mobile {
+      @media $mobile {
         padding: 8px;
         font-size: 14px;
       }
@@ -204,12 +183,12 @@ header.chalkbeat {
     }
 
     .cb__newsletters {
-      background: @purple;
+      background: var(--purple);
       margin-right: 8px;
     }
 
     .cb__donate {
-      background: @yellow;
+      background: var(--yellow);
     }
   }
 }
@@ -228,7 +207,7 @@ footer.chalkbeat {
     align-items: center;
     justify-content: space-between;
 
-    @media @mobile {
+    @media $mobile {
       display: block;
       text-align: center;
     }

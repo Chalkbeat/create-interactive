@@ -1,16 +1,14 @@
-var google = require("@googleapis/sheets");
-var chalk = require("chalk");
-var opn = require("opn");
+import * as google from "@googleapis/sheets";
+import opn from "opn";
 
-var http = require("http");
-var os = require("os");
-var path = require("path");
-var url = require("url");
-var fs = require("fs");
+import http from "node:http";
+import os from "node:os";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 var tokenLocation = path.join(os.homedir(), ".google_oauth_token");
 
-var authenticate = function() {
+export function authenticate() {
   var tokens = fs.readFileSync(path.join(os.homedir(), ".google_oauth_token"), "utf-8");
   tokens = JSON.parse(tokens);
   auth = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CONSUMER_SECRET);
@@ -24,11 +22,9 @@ var authenticate = function() {
   return auth;
 };
 
-var task = function(grunt) {
+export default function task(heist) {
 
-  grunt.registerTask("google-auth", "Authenticates with Google for document download", function() {
-
-    var done = this.async();
+  heist.defineTask("google-auth", "Authenticates with Google for document download", function() {
 
     var clientID = process.env.GOOGLE_OAUTH_CLIENT_ID;
     var secret = process.env.GOOGLE_OAUTH_CONSUMER_SECRET;
@@ -85,5 +81,3 @@ var task = function(grunt) {
 }
 
 task.authenticate = authenticate;
-
-module.exports = task;

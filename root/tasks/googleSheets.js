@@ -6,13 +6,13 @@ check for existing data to merge--it does a fresh pull every time.
 
 */
 
-var project = require("../project.json");
-var os = require("os");
-var path = require("path");
-var google = require("@googleapis/sheets");
-var api = google.sheets("v4");
+import project from "../project.json" with { type: "json" };
+import os from "node:os";
+import path from "node:path";
+import * as google from "@googleapis/sheets";
+import { authenticate } from "./googleAuth.js";
 
-var { authenticate } = require("./googleAuth");
+var api = google.sheets("v4");
 
 var camelCase = function(str) {
   return str.replace(/[^\w]+(\w)/g, function(all, match) {
@@ -39,9 +39,9 @@ var cast = function(str) {
   return str;
 };
 
-module.exports = function(grunt) {
+export default function(heist) {
 
-  grunt.registerTask("sheets", "Downloads from Google Sheets -> JSON", async function() {
+  heist.defineTask("sheets", "Downloads from Google Sheets -> JSON", async function() {
 
     var auth = null;
     try {
@@ -55,8 +55,6 @@ module.exports = function(grunt) {
     if (!sheetKeys || !sheetKeys.length) {
       return grunt.fail.fatal("You must specify a spreadsheet key in project.json or auth.json!");
     }
-
-    var done = this.async();
 
     var bookRequests = sheetKeys.map(async function(spreadsheetId) {
       var book = (await api.spreadsheets.get({ auth, spreadsheetId })).data;
@@ -128,8 +126,6 @@ module.exports = function(grunt) {
     });
 
     await Promise.all(bookRequests);
-
-    done();
 
   });
 

@@ -1,14 +1,10 @@
-var google = require("@googleapis/docs");
-var os = require("os");
-var path = require("path");
-var { authenticate } = require("./googleAuth");
+import * as google from "@googleapis/docs";
+import os from "node:os";
+import path from "node:path";
+import { authenticate } from "./googleAuth.js";
 
-var description = "Save Google Docs into the data folder";
-
-module.exports = function (grunt) {
-  grunt.registerTask("docs", description, function () {
-    var done = this.async();
-
+export default function(heist) {
+  heist.defineTask("docs", "Save Google Docs into the data folder", async function () {
     var config = grunt.file.readJSON("project.json");
     var auth = null;
     try {

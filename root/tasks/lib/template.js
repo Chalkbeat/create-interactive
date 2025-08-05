@@ -51,7 +51,7 @@ var escapeStringChar = function(chr) {
   return '\\' + stringEscapes[chr];
 }
 
-export default function compile(string, options) {
+export function compile(string, options) {
   // Based on John Resig's `tmpl` implementation (http://ejohn.org/blog/javascript-micro-templating/)
   // and Laura Doktorova's doT.js (https://github.com/olado/doT).
   var settings = {
@@ -123,7 +123,7 @@ export default function compile(string, options) {
   }
 
   // Frame code as the function body.
-  source = 'function(' + (variable || 'obj') + ') {' +
+  source = 'async function(' + (variable || 'obj') + ') {' +
     (variable
       ? ''
       : 'obj || (obj = {});\n'
@@ -168,7 +168,7 @@ export default function compile(string, options) {
         var line = match[1] * 1 - prefixLength;
         console.log(match[0], result.toString().indexOf("\n"));
         err.line = line;
-        console.log(styleText(["bgRed", "white"], "Template execution error: %s:%s"), options.sourceURL, line + 1);
+        console.error(styleText(["bgRed", "white"], "Template execution error: %s:%s"), options.sourceURL, line + 1);
         var split = result.source.split("\n");
         for (var i = line > 0 ? line - 2 : 0; i < line + 3; i++) {
           console.log(styleText([i == line ? "red" : "cyan"], split[i]));

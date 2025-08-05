@@ -1,27 +1,25 @@
 /*
 Build a bundled app.js file using browserify
 */
-module.exports = function(grunt) {
+import { rollup } from "rollup";
+import terser from "@rollup/plugin-terser";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import commonJS from "@rollup/plugin-commonjs";
+// import less from "less";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { importText, importLess } from "./lib/rollup-plugins.js";
+import config from "../project.json" with { type: "json" };
 
-  var { rollup } = require("rollup");
-  var terser = require("@rollup/plugin-terser");
-  var { nodeResolve } = require("@rollup/plugin-node-resolve");
-  var commonJS = require("@rollup/plugin-commonjs");
-  var { babel }  = require("@rollup/plugin-babel");
-  var less = require("less");
-  var fs = require("fs").promises;
-  var path = require("path");
-  var npmImporter = require("./lib/npm-less");
-  var { importText, importLESS } = require("./lib/rollup-plugins");
-  var cache = null;
+var cache = null;
 
-  grunt.registerTask("bundle", "Build app.js using browserify", function(mode) {
+export default function(heist) {
+
+  heist.defineTask("bundle", "Build app.js using browserify", async function(mode, context) {
     //run in dev mode unless otherwise specified
     mode = mode || "dev";
-    var done = this.async();
 
     //specify starter files here - if you need additionally built JS, just add it.
-    var config = grunt.file.readJSON("project.json");
     var seeds = config.scripts;
 
     var plugins = [
@@ -30,20 +28,9 @@ module.exports = function(grunt) {
         browser: true
       }),
       importText(),
-      importLESS(),
+      // importLESS(),
       commonJS({
         requireReturnsDefault: "auto"
-      }),
-      babel({
-        targets: {
-          ios: "14",
-          firefox: "120",
-          chrome: "125"
-        },
-        babelHelpers: "bundled",
-        presets: [
-          "@babel/preset-env",
-        ]
       }),
       terser({
         mangle: false,
@@ -51,45 +38,39 @@ module.exports = function(grunt) {
       })
     ];
 
-    grunt.file.mkdir("build");
+    await fs.mkdir("build", { recursive: true });
 
-    var bundle = async function() {
+    for (var [src, dest] of Object.entries(seeds)) {
 
-      for (var [src, dest] of Object.entries(seeds)) {
+      var rolled = await rollup({
+        input: src,
+        plugins,
+        cache
+      });
 
-        var rolled = await rollup({
-          input: src,
-          plugins,
-          cache
-        });
+      cache = rolled.cache;
 
-        cache = rolled.cache;
+      var { output } = await rolled.generate({
+        name: "interactive",
+        format: "es",
+        sourcemap: true,
+        interop: "default"
+      });
 
-        var { output } = await rolled.generate({
-          name: "interactive",
-          format: "es",
-          sourcemap: true,
-          interop: "default"
-        });
+      var [ bundle ] = output;
 
-        var [ bundle ] = output;
+      var { code, map } = bundle;
 
-        var { code, map } = bundle;
+      // add source map reference
+      var smURL = `./${path.basename(dest)}.map`;
+      code += `\n//# sourceMappingURL=${smURL}`;
 
-        // add source map reference
-        var smURL = `./${path.basename(dest)}.map`;
-        code += `\n//# sourceMappingURL=${smURL}`;
+      var writeCode = fs.writeFile(dest, code);
+      var writeMap = fs.writeFile(dest + ".map", map.toString());
 
-        var writeCode = fs.writeFile(dest, code);
-        var writeMap = fs.writeFile(dest + ".map", map.toString());
-
-        await Promise.all([writeCode, writeMap]);
-        console.log(`Wrote ${src} -> ${dest}`);
-      }
-
-    };
-
-    bundle().then(done).catch(done);
+      await Promise.all([writeCode, writeMap]);
+      console.log(`Wrote ${src} -> ${dest}`);
+    }
 
   });
 

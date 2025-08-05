@@ -1,11 +1,10 @@
-var fs = require("fs");
-var path = require("path");
-var util = require("util");
-var chalk = require("chalk");
-var gzip = require("zlib").gzip;
-var mime = require("mime");
+import fs from "node:fs";
+import path from "node:path";
+import util from "node:util";
+import { gzip } from "zlib";
+import mime from "mime";
 
-var s3 = require("./lib/s3");
+import * as s3 from "./lib/s3.js";
 
 var join = (...parts) => path.join(...parts).replace(/\\/g, "/");
 var formatSize = function (input) {
@@ -46,8 +45,9 @@ var zip = function (buffer) {
   });
 };
 
-module.exports = function (grunt) {
-  var config = require("../project.json");
+import config from "../project.json" with { type: "json" };
+
+export default function (heist) {
 
   var findBuiltFiles = function () {
     var pattern = ["**/*", "!assets/synced/**/*"];
@@ -70,11 +70,10 @@ module.exports = function (grunt) {
     return list;
   };
 
-  grunt.registerTask(
+  heist.defineTask(
     "publish",
     "Pushes the build folder to S3",
-    function (deploy) {
-      var done = this.async();
+    async function (deploy) {
 
       deploy = deploy || "stage";
 
@@ -101,71 +100,66 @@ module.exports = function (grunt) {
 
       var uploads = findBuiltFiles();
 
-      var uploadProcess = async function () {
-        for (var i = 0; i < uploads.length; i += BATCH_SIZE) {
-          var batch = uploads.slice(i, i + BATCH_SIZE);
+      for (var i = 0; i < uploads.length; i += BATCH_SIZE) {
+        var batch = uploads.slice(i, i + BATCH_SIZE);
 
-          var puts = batch.map(async function (upload) {
-            var putObject = {
-              Bucket: bucketConfig.bucket,
-              Key: join(
-                bucketConfig.path,
-                upload.path.replace(/^\\?build/, "")
-              ),
-              Body: upload.buffer,
-              ACL: "public-read",
-              ContentType: mime.getType(upload.path),
-              CacheControl: "public,max-age=120",
-            };
+        var puts = batch.map(async function (upload) {
+          var putObject = {
+            Bucket: bucketConfig.bucket,
+            Key: join(
+              bucketConfig.path,
+              upload.path.replace(/^\\?build/, "")
+            ),
+            Body: upload.buffer,
+            ACL: "public-read",
+            ContentType: mime.getType(upload.path),
+            CacheControl: "public,max-age=120",
+          };
 
-            // gzip may not be necessary anymore?
-            var isCompressed = false;
-            var extension = upload.path.split(".").pop();
-            if (gzippable.has(extension)) {
-              putObject.Body = await zip(upload.buffer);
-              putObject.ContentEncoding = "gzip";
-              isCompressed = true;
-            }
+          // gzip may not be necessary anymore?
+          var isCompressed = false;
+          var extension = upload.path.split(".").pop();
+          if (gzippable.has(extension)) {
+            putObject.Body = await zip(upload.buffer);
+            putObject.ContentEncoding = "gzip";
+            isCompressed = true;
+          }
 
-            var before = upload.buffer.length;
-            var after = putObject.Body.length;
-            var logString = isCompressed
-              ? "- %s - %s %s %s (%s)"
-              : "- %s - %s";
+          var before = upload.buffer.length;
+          var after = putObject.Body.length;
+          var logString = isCompressed
+            ? "- %s - %s %s %s (%s)"
+            : "- %s - %s";
 
-            var abbreviated = putObject.Key.split("/").map(w => cut(w, 30)).join("/");
+          var abbreviated = putObject.Key.split("/").map(w => cut(w, 30)).join("/");
 
-            var args = [
-              logString,
-              abbreviated,
-              chalk.cyan(formatSize(before)),
-            ];
-            if (isCompressed) {
-              args.push(
-                chalk.yellow("=>"),
-                chalk.cyan(formatSize(after)),
-                chalk.bold.green(
-                  Math.round((after / before) * 100).toFixed(1) + "% via gzip"
-                )
-              );
-            }
-            console.log(...args);
-            if (deploy == "simulated") return;
-            return s3.upload(putObject);
-          });
+          var args = [
+            logString,
+            abbreviated,
+            chalk.cyan(formatSize(before)),
+          ];
+          if (isCompressed) {
+            args.push(
+              chalk.yellow("=>"),
+              chalk.cyan(formatSize(after)),
+              chalk.bold.green(
+                Math.round((after / before) * 100).toFixed(1) + "% via gzip"
+              )
+            );
+          }
+          console.log(...args);
+          if (deploy == "simulated") return;
+          return s3.upload(putObject);
+        });
 
-          await Promise.all(puts);
-        }
+        await Promise.all(puts);
+      }
 
-        console.log("All files uploaded successfully");
-        if (deploy == "stage" && config.production) {
-          grunt.log.error(
-            "CHECK YOURSELF: This project is marked as live, but you deployed to stage."
-          );
-        }
-      };
-
-      uploadProcess().then(done);
-    }
-  );
-};
+      console.log("All files uploaded successfully");
+      if (deploy == "stage" && config.production) {
+        grunt.log.error(
+          "CHECK YOURSELF: This project is marked as live, but you deployed to stage."
+        );
+      }
+  });
+}
