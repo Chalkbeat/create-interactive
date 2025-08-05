@@ -4,34 +4,29 @@ Runs tasks on an automated basis
 
 */
 
-export default function() {}
-
 /** config variables **/
-// var tasks = {
-//   local: ["sheets", "static", "connect"],
-//   stage: ["sheets", "clean", "static", "publish"],
-//   live: ["sheets", "clean", "static", "publish:live"]
-// };
+var tasks = {
+  local: ["sheets", "static"],
+  stage: ["sheets", "clean", "static", "publish"],
+  live: ["sheets", "clean", "static", "publish:live"]
+};
 
-// /** end config **/
+var interval = 15;
 
-// var chalk = require("chalk");
-// var shell = require("shelljs");
+/** end config **/
 
-// module.exports = function(grunt) {
+export default function(heist) {
 
-//   grunt.registerTask("cron", "Run the build on a timer", function(interval = 15, target = "local") {
-//     var done = this.async();
+  heist.defineTask("cron", "Run the build on a timer", function(target = "local") {
 
-//     console.log(`Setting ${interval} second timer for a ${target} target...`);
+    console.log(`Setting ${interval} second timer for a ${target} target...`);
 
-//     setTimeout(function() {
-//       var run = tasks[target] || tasks.local;
-//       grunt.task.run(run);
-//       grunt.task.run([`cron:${interval}:${target}`]);
-//       done();
-//     }, interval * 1000);
+    setTimeout(async function() {
+      var run = tasks[target] || tasks.local;
+      await heist.run(run);
+      heist.run([`cron:${interval}:${target}`]);
+    }, interval * 1000);
 
-//   });
+  });
 
-// };
+};
