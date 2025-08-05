@@ -71,15 +71,14 @@ export default function(heist) {
     };
 
     var src = path.join(heist.home, "src");
-    var inputs = await heist.find(["src/**/*.html", "!_*.html"]);
-    for (var input of inputs) {
-      var contents = await fs.readFile(input, "utf-8");
-      var output = await process(contents, context, input);
-      var relative = path.relative(src, input);
-      console.log(`Building file ${relative}...`);
-      var dest = path.resolve(heist.home, "build", relative);
+    var inputs = await heist.find(["**/*.html", "!_*.html"], "src");
+    for (var filename of inputs) {
+      var contents = await fs.readFile(path.join("src", filename), "utf-8");
+      var output = await process(contents, context, filename);
+      console.log(`Building file ${filename}...`);
+      var dest = path.join("build", filename);
       await fs.mkdir(path.dirname(dest), { recursive: true });
-      await fs.writeFile(path.resolve(heist.home, "build", relative), output);
+      await fs.writeFile(dest, output);
     }
   });
 

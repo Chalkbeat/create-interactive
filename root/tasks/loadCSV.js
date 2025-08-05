@@ -14,7 +14,7 @@ export default function(heist) {
 
     var { parse } = await import("csv-parse");
 
-    var files = await heist.find("data/**/*.csv");
+    var files = await heist.find("**/*.csv", "data");
 
     var csv = {};
 
@@ -23,7 +23,7 @@ export default function(heist) {
         columns: true,
         cast: true
       });
-      var handle = await fs.open(file);
+      var handle = await fs.open(path.join("data", file));
       var stream = handle.createReadStream();
       stream.pipe(parser);
       var parsed = [];

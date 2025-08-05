@@ -13,7 +13,7 @@ export default function(heist) {
   var ls = async function(dir) {
     var stats = [];
     try {
-      var matching = await heist.find("src/assets/synced/**/*");
+      var matching = await heist.find("**/*", dir);
       // add modification time and size
       for (var m of matching) {
         var s = await fs.stat(path.join(dir, m));

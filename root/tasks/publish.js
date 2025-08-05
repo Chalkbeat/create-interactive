@@ -30,7 +30,7 @@ import config from "../project.json" with { type: "json" };
 export default function (heist) {
 
   var findBuiltFiles = async function () {
-    var pattern = ["build/**/*", "!build/assets/synced/**/*"];
+    var pattern = ["**/*", "!assets/synced/**/*"];
     var embargo = config.embargo;
     if (embargo) {
       if (!(embargo instanceof Array)) embargo = [embargo];
@@ -39,9 +39,9 @@ export default function (heist) {
         console.log(chalk.bgRed.white("File embargoed: %s"), item);
       };
     }
-    var files = await heist.find(pattern);
+    var files = await heist.find(pattern, "build");
     var list = files.map(function (file) {
-      var buffer = fs.readFileSync(file);
+      var buffer = fs.readFileSync("build/" + file);
       return {
         path: file.replace(/^\\?build/, ""),
         buffer: buffer,

@@ -12,11 +12,11 @@ export default function(heist) {
   heist.defineTask("archieml", "Loads ArchieML files from data/*.txt", async function(target, context) {
 
     var archieml = {};
-    var files = await heist.find("data/*.txt");
+    var files = await heist.find("*.txt", "data");
 
     for (var f of files) {
       var name = path.basename(f).replace(/(\.docs)?\.txt$/, "");
-      var contents = await fs.readFile(f, "utf-8");
+      var contents = await fs.readFile(path.join("data", f), "utf-8");
 
       var parsed = betty.parse(contents, {
         onFieldName: t => t[0].toLowerCase() + t.slice(1)
