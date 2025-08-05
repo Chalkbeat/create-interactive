@@ -9,7 +9,7 @@ var cache = null;
 
 export default function(heist) {
 
-  heist.defineTask("bundle", "Build app.js using browserify", async function(mode, context) {
+  heist.defineTask("bundle", "Build client-side scripts", async function(mode, context) {
 
     var { rollup } = await import("rollup");
     var { default: terser } = await import("@rollup/plugin-terser");
