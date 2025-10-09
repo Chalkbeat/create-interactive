@@ -6,8 +6,7 @@ export default function(heist) {
 
   heist.defineTask("html", "Generate HTML files", async function(target, context) {
 
-    var typogr = await import("typogr");
-
+    var { default: typogr } = await import("typogr");
     var { HtmlRenderer, Parser } = await import("commonmark");
 
     var writer = new HtmlRenderer();
