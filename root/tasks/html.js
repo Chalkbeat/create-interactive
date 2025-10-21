@@ -38,7 +38,7 @@ export default function(heist) {
       async include(where, data = context) {
         // console.log(" - Including file: " +  where);
         var file = await fs.readFile(path.resolve("src/", where), "utf-8");
-        var templateData = Object.create(data);
+        var templateData = Object.assign({}, context, data);
         templateData.t = this;
         return process(file, templateData, where);
       },
