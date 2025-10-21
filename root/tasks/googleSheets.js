@@ -120,6 +120,7 @@ export default function(heist) {
         }
         var filename = `data/${sheet.properties.title.replace(/[\s\/]+/g, "_")}.sheet.json`;
         console.log(`Saving sheet to ${filename}`);
+        await fs.mkdir("data", { recursive: true });
         await fs.writeFile(filename, JSON.stringify(out, null, 2));
       });
 

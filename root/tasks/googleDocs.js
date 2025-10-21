@@ -12,7 +12,7 @@ var formatters = {
 
 export default function(heist) {
 
-  heist.defineTask("docs", "Save Google Docs into the data folder", async function () {
+  heist.defineTask("docs", "Save Google Docs into the data folder", async function (mode) {
     var google = await import("@googleapis/docs");
 
     var auth = null;
@@ -39,7 +39,7 @@ export default function(heist) {
       var chunk = keys.slice(i, i + rateLimit);
       var batch = chunk.map(async function (key) {
         var documentId = config.docs[key];
-        var suggestionsViewMode = "PREVIEW_WITHOUT_SUGGESTIONS";
+        var suggestionsViewMode = mode == "suggest" ? "PREVIEW_SUGGESTIONS_ACCEPTED" : "PREVIEW_WITHOUT_SUGGESTIONS";
         var docResponse = await docs.get({
           documentId,
           suggestionsViewMode,
@@ -84,6 +84,7 @@ export default function(heist) {
 
         text = text.replace(/\x0b/g, "\n");
 
+        await fs.mkdir("data", { recursive: true });
         console.log(`Writing document as data/${name}`);
         await fs.writeFile(path.join("data", name), text);
       });
