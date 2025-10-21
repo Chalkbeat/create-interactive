@@ -43,11 +43,16 @@ export default function(heist) {
 
     for (var [src, dest] of Object.entries(seeds)) {
 
-      var rolled = await rollup({
-        input: src,
-        plugins,
-        cache
-      });
+      try {
+        var rolled = await rollup({
+          input: src,
+          plugins,
+          cache
+        });
+      } catch (err) {
+        console.error(`Unable to compile ${path.relative(path.dirname(src), err.loc.file)}:${err.loc.line}:${err.loc.column} - ${err.message}`);
+        continue;
+      }
 
       cache = rolled.cache;
 
@@ -55,16 +60,13 @@ export default function(heist) {
         name: "interactive",
         format: "es",
         sourcemap: true,
+        sourcemapFileNames: `${path.basename(dest)}.map`,
         interop: "default"
       });
 
       var [ bundle ] = output;
 
       var { code, map } = bundle;
-
-      // add source map reference
-      var smURL = `./${path.basename(dest)}.map`;
-      code += `\n//# sourceMappingURL=${smURL}`;
 
       var writeCode = fs.writeFile(dest, code);
       var writeMap = fs.writeFile(dest + ".map", map.toString());
