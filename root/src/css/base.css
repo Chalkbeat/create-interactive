@@ -52,17 +52,18 @@
   --dark-green: #4A8B44;
   --green: #19AB76;
   --light-green: #A7DCBC;
+
+  /* Font stacks */
+  --serif: "Crimson Pro", Times, serif;
+  --sans: Figtree, Helvetica, Arial, sans-serif;
 }
 
-/* Font stacks */
---serif: "Crimson Pro", Times, serif;
---sans: Figtree, Helvetica, Arial, sans-serif;
 
 /* Media queries */
 /* Replace these variables with better syntax when it becomes available */
-$mobile: (max-width: 600px);
-$tablet: (max-width: 1100px);
-$desktop: (min-width: 601px);
+@custom-media --mobile (max-width: 600px);
+@custom-media --tablet (max-width: 1100px);
+@custom-media --desktop (min-width: 601px);
 
 /*defensive coding */
 * {
@@ -103,7 +104,7 @@ h1 {
   font-size: 44px;
   font-family: var(--sans);
 
-  @media $mobile {
+  @media (--mobile) {
     font-size: 34px;
   }
 }
@@ -113,7 +114,7 @@ h2 {
   font-family: var(--sans);
   font-weight: normal;
 
-  @media $mobile {
+  @media (--mobile) {
     font-size: 24px;
   }
 }

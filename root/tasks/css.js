@@ -18,16 +18,17 @@ export default function(heist) {
 
   heist.defineTask("css", "Compile styles from src/css/seed.css", async function() {
 
-    var [ postcss, variables, atImport, env ] = await lazy("postcss postcss-simple-vars postcss-import postcss-preset-env".split(" "));
+    var [ postcss, atImport, env ] = await lazy("postcss postcss-import postcss-preset-env".split(" "));
 
     var { default: config } = await import("../project.json", { with: { type: "json" } });
 
     var seeds = config.styles;
 
     var processor = postcss([
-      variables(),
       atImport(),
-      env()
+      env({
+        browsers: "Safari >17"
+      })
     ]);
 
     for (var [src, dest] of Object.entries(seeds)) {
