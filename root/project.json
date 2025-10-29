@@ -15,6 +15,7 @@
   "scripts": {
     "src/js/main.js": "build/app.js"
   },
+  "vertical": "",
   "title": "",
   "description": "",
   "url": "",

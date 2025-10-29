@@ -49,20 +49,21 @@ export default function(heist) {
           plugins,
           cache
         });
+
+        cache = rolled.cache;
+
+        var { output } = await rolled.generate({
+          name: "interactive",
+          format: "es",
+          sourcemap: true,
+          sourcemapFileNames: `${path.basename(dest)}.map`,
+          interop: "default"
+        });
+
       } catch (err) {
         console.error(`Unable to compile ${path.relative(path.dirname(src), err.loc.file)}:${err.loc.line}:${err.loc.column} - ${err.message}`);
         continue;
-      }
-
-      cache = rolled.cache;
-
-      var { output } = await rolled.generate({
-        name: "interactive",
-        format: "es",
-        sourcemap: true,
-        sourcemapFileNames: `${path.basename(dest)}.map`,
-        interop: "default"
-      });
+      }  
 
       var [ bundle ] = output;
 

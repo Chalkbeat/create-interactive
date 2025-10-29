@@ -11,7 +11,11 @@ export default function h(tagName, attributes = {}, children = []) {
   }
   for (var attr in attributes) {
     var value = attributes[attr];
-    element.setAttribute(attr, value);
+    if (attr in element) {
+      element[attr] = value;
+    } else {
+      element.setAttribute(attr, value);
+    }
   }
   if (children) {
     if (typeof children == "string") {

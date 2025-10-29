@@ -92,7 +92,7 @@ export default function (heist) {
               upload.path
             ),
             Body: upload.buffer,
-            ACL: "public-read",
+            // ACL: "public-read",
             ContentType: mime.getType(upload.path),
             CacheControl: "public,max-age=120",
           };

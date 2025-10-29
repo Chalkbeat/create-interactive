@@ -24,6 +24,7 @@
   --blue: #268CBA;
   --peach: #F79C75;
   --purple: #BD75AC;
+  --cream: #F5F2E9;
 
   /* Extended colors */
   --lighter-gray: #ECECEC;
@@ -56,6 +57,21 @@
   /* Font stacks */
   --serif: "Crimson Pro", Times, serif;
   --sans: Figtree, Helvetica, Arial, sans-serif;
+
+  &.Votebeat {
+    --logo: var(--vbLogo);
+    --bureau: var(--vbBureau);
+  }
+
+  &.Chalkbeat {
+    --logo: var(--cbLogo);
+    --bureau: var(--cbBureau);
+  }
+
+  &.Healthbeat {
+    --logo: var(--hbLogo);
+    --bureau: var(--hbBureau);
+  }
 }
 
 
@@ -119,13 +135,13 @@ h2 {
   }
 }
 
-a, a:visited {
-  color: @teal;
-}
 
-a:hover, a:active, a:focus {
-  color: @teal;
-  border-bottom: none;
+a, a:visited {
+  color: var(--bureau);
+
+  &:active, &:hover, &:focus {
+    color: var(--logo);
+  }
 }
 
 img:not([alt]) {
@@ -137,93 +153,53 @@ img:not([alt]) {
   }
 }
 
-/* Chalkbeat header */
+header {
+  text-align: center;
+  padding: 20px;
 
-header.chalkbeat {
-  background: black;
-  color: white;
-
-  .cb__justified {
-    padding: 16px;
-    display: flex;
-    margin: auto;
-    max-width: 1100px;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .cb__logo {
-    max-height: 60px;
-
-    @media $mobile {
-      max-width: 120px;
-    }
-  }
-
-  .cb__buttons {
-    a {
-      display: inline-block;
-      padding: 10px 16px;
-      color: var(--darker-gray);
-      text-decoration: none;
-      background: var(--teal);
-      font-family: var(--sans);
-      font-size: 19px;
-      font-weight: bold;
-
-      @media $mobile {
-        padding: 8px;
-        font-size: 14px;
-      }
-    }
-
-    svg {
-      height: 2ch;
-      vertical-align: baseline;
-      display: inline-block;
-    }
-
-    .cb__newsletters {
-      background: var(--purple);
-      margin-right: 8px;
-    }
-
-    .cb__donate {
-      background: var(--yellow);
-    }
+  img {
+    max-height: 50px;
   }
 }
 
-/* Chalkbeat footer */
+footer {
+  background: var(--cream);
+  padding-top: 4em;
 
-footer.chalkbeat {
-  background: black;
-  color: white;
-
-  .cb__justified {
-    max-width: 1100px;
+  .rhombus {
+    position: relative;
+    color: var(--cream);
     margin: auto;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    max-width: 600px;
+    text-align: center;
+    font-family: var(--sans);
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 1em;
 
-    @media $mobile {
+    &::before {
+      z-index: 0;
+      position: absolute;
+      inset: 0;
+      transform: skew(-20deg);
+      background: #333;
+      content: "";
       display: block;
-      text-align: center;
     }
-  }
 
-  .cb__logo {
-    max-width: 120px;
-    margin-right: 20px;
-  }
+    .content {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .cb__links {
-    font-size: 14px;
+    .copyright {
+      flex: 1;
+    }
 
-    a {
-      margin: 0 1em;
+    img {
+      max-height: 20px;
     }
   }
 }
