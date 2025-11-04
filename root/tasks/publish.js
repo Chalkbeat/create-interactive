@@ -109,7 +109,7 @@ export default function (heist) {
 
       console.log("All files uploaded successfully");
       if (deploy == "stage" && config.production) {
-        grunt.log.error(
+        console.error(
           "CHECK YOURSELF: This project is marked as live, but you deployed to stage."
         );
       }
