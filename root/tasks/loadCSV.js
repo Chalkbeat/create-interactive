@@ -16,7 +16,7 @@ export default function(heist) {
 
     var files = await heist.find("**/*.csv", "data");
 
-    var csv = {};
+    var csv = context.csv = {};
 
     for (var file of files) {
       var parser = parse({
@@ -45,8 +45,8 @@ export default function(heist) {
       var sanitized = path.basename(file)
         .replace(".csv", "")
         .replace(/\W(\w)/g, function(_, letter) { return letter.toUpperCase() });
-      console.log(`Loaded ${file} as grunt.data.${sanitized}`);
-      grunt.data.csv[sanitized] = parsed;
+      console.log(`Loaded ${file} as csv.${sanitized}`);
+      csv[sanitized] = parsed;
     }
 
   });
