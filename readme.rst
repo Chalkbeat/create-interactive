@@ -71,12 +71,12 @@ that are created for you to start your project:
 
 -  ``/src/index.html`` - The primary HTML file for the project
 -  ``/src/js/main.js`` - The entry point for all JavaScript on the page
--  ``/src/css/seed.less`` - The bootstrap file for LESS compilation into
+-  ``/src/css/seed.css`` - The bootstrap file for LESS compilation into
    CSS
 
 If you open up ``src/index.html``, and edit it while Heist is running, the dev
 server will see your changes and re-run the relevant task. Likewise, editing
-``seed.less`` (or any other LESS file in the ``src/css`` directory) will
+``seed.css`` (or any other stylesheet in the ``src/css`` directory) will
 cause the build system to recompile your CSS, and editing any JavaScript
 files in the ``src/js`` file will cause it to rebuild ``/build/app.js`` based
 on your  dependencies from ``src/js/main.js``. These changes are baked out
@@ -253,12 +253,12 @@ it like so:
 
 .. code:: css
 
-    @import "variables.css"; //import src/css/variables.css
-    @import "base.css"; //import src/css/base.css
-    @import "project.css"; //import src/css/project.css
+    @import "variables.css";
+    @import "base.css";
+    @import "project.css";
 
 From this point, we can continue adding new HTML templates, new
-JavaScript files, and new LESS imports, just by following these
+JavaScript files, and new CSS imports, just by following these
 conventions. Our page will be regenerated as we make changes as long as
 the default Heist task is running, and the built-in live reload server
 will even refresh the page for us!
@@ -302,24 +302,27 @@ between runs.
 
 The default tasks currently defined by the rig are:
 
--  ``archieml`` - Load text files onto ``archieml``
--  ``build`` - Process HTML templates
--  ``bundle`` - Compile JS into the app.js file
--  ``clean`` - Delete the build folder to start again from scratch
--  ``copy`` - Copy all assets over to the build folder
--  ``cron`` - Run a series of build tasks at regular intervals (for automated publishing, like election results)
--  ``csv`` - Load CSV files onto ``csv``
--  ``docs`` - Download Google Docs and save as .txt
--  ``google-auth`` - Authorize against the Drive API for downloading private files from Google, such as Docs and Sheets files.
--  ``google-create`` - Create a Google Drive file and link it into the project config
--  ``json`` - Load JSON files onto ``json``
--  ``less`` - Compile LESS files into CSS
--  ``publish`` - Push files to S3 or other endpoints
--  ``serve`` - start the dev server, which also watches files for changes
--  ``sheets`` - Download data from Google Sheets and save as JSON files
--  ``static`` - Run all generation tasks, but do not start the watches or dev server
--  ``sync`` - Synchronize gitignored assets in ``src/assets/synced`` with the S3 bucket
--  ``template`` - Load data files and process HTML templates
+- ``archieml``: Loads ArchieML files from data/*.txt
+- ``bundle``: Build client-side scripts
+- ``clean``: Erase the contents of the build folder
+- ``content``: Load content from data files
+- ``copy``: Copy assets to the static folder
+- ``cron``: Run the build on a timer
+- ``css``: Compile styles from src/css/seed.css
+- ``csv``: Convert CSV to JSON and load onto grunt.data
+- ``docs``: Save Google Docs into the data folder
+- ``google-auth``: Authenticates with Google for document download
+- ``google-create``: Create a linked Drive file (i.e., Google Sheets or Docs)
+- ``html``: Generate HTML files
+- ``json``: Import JSON files from the data folder
+- ``publish``: Pushes the build folder to S3
+- ``quick``: Build without assets
+- ``serve``: Run an 11ty dev server and enable watch tasks
+- ``sheets``: Downloads from Google Sheets -> JSON
+- ``static``: Build all files
+- ``sync`: Synchronize large files with S3
+- ``template``: Build HTML from content/templates
+- ``update``: Download content from remote services
 
 Knowing that these tasks are composable, we can use it to perform selective
 operations, not just full builds. 
