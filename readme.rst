@@ -30,7 +30,10 @@ Installation
 Before you begin, you'll need to have the following installed:
 
 -  NodeJS/NPM
--  The Heist task runner installed globally (``npm i -g @twilburn/heist``)
+-  The Heist task runner, installed globally (``npm i -g @twilburn/heist``)
+
+You can also run Heist via ``npx @twilburn/heist``, but it will incur a startup
+delay as the command is downloaded from the registry on each invocation.
 
 If you would like to edit this starter for your own purposes, you can clone
 the repo to a folder and then run ``npm link`` to install the
