@@ -170,12 +170,14 @@ footer {
     position: relative;
     color: var(--cream);
     margin: auto;
-    max-width: 600px;
+    width: 600px;
+    max-width: 100%;
     text-align: center;
     font-family: var(--sans);
     font-size: 13px;
     text-transform: uppercase;
     padding: 1em;
+    overflow: hidden;
 
     &::before {
       z-index: 0;
@@ -200,6 +202,10 @@ footer {
 
     img {
       max-height: 20px;
+
+      @media (--mobile) {
+        max-height: 40px;
+      }
     }
   }
 }

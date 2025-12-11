@@ -16,7 +16,10 @@ export default function(heist) {
   });
 
   heist.defineTask("copy", "Copy assets to the static folder", async function() {
-    await fs.cp("src/assets", "build/assets", RECURSIVE);
+    let synced = path.relative(".", "src/assets/synced");
+    let from = path.relative(".", "src/assets");
+    let to = path.relative(".", "build/assets");
+    await fs.cp(from, to, { ...RECURSIVE, filter: src => !src.startsWith(synced) });
   });
 
 }

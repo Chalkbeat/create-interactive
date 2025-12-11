@@ -62,7 +62,7 @@ export default function(heist) {
 
       } catch (err) {
         console.error(`Unable to compile ${path.relative(path.dirname(src), err.loc.file)}:${err.loc.line}:${err.loc.column} - ${err.message}`);
-        continue;
+        break;
       }  
 
       var [ bundle ] = output;

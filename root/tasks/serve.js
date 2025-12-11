@@ -17,6 +17,9 @@ export default async function(heist) {
     var server = new Server("11ty", "build", {
       watcher,
       liveReload: true,
+      aliases: {
+        "/assets/synced/": "src/assets/synced/"
+      },
       logger: {
         info: console.info,
         log() {},

@@ -10,7 +10,7 @@ import fs from "node:fs/promises";
 
 export default function(heist) {
 
-  heist.defineTask("csv", "Convert CSV to JSON and load onto grunt.data", async function() {
+  heist.defineTask("csv", "Convert CSV to JSON and load onto grunt.data", async function(target, context) {
 
     var { parse } = await import("csv-parse");
 
