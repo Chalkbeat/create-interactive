@@ -2,7 +2,7 @@ export default async function(heist) {
   //load tasks
   await heist.loadTasks("./tasks");
 
-  heist.defineTask("update", "Download content from remote services", function(target = stage) {
+  heist.defineTask("update", "Download content from remote services", function(target = "stage") {
     heist.run(["sheets", "docs", `sync:${target}`]);
   });
   heist.defineTask("content", "Load content from data files", [

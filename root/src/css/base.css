@@ -177,7 +177,10 @@ footer {
     font-size: 13px;
     text-transform: uppercase;
     padding: 1em;
-    overflow: hidden;
+
+    @media (--tablet) {
+      overflow: hidden;
+    }
 
     &::before {
       z-index: 0;
