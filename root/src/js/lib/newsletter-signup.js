@@ -6,8 +6,36 @@ const RECAP_KEY = "6LckrOMmAAAAAKSCiwGzwdj6HN3FaT2LmVDtr1uf";
 
 var defaultData = {
   website: "chalkbeat",
-  interest_ids: ["9907031392"]
+  interest_ids: ["4acd088cc8"]
 };
+
+let slugs = {
+  "chalkbeat-beyondhighschool": "1deccff531",
+  "chalkbeat-chicago": "9907031392",
+  "chalkbeat-colorado": "0d9ffbb02b",
+  "chalkbeat-detroit": "e04fb8aad7",
+  "chalkbeat-enespanol": "0d9ffbb02b",
+  "chalkbeat-howiteach": "d1238cf277",
+  "chalkbeat-ideas": "a14839f645",
+  "chalkbeat-indiana": "1e310278c8",
+  "chalkbeat-national": "4acd088cc8",
+  "chalkbeat-newark": "6acaa85f6b",
+  "chalkbeat-newyork": "1662a4a7bc",
+  "chalkbeat-philadelphia": "e66dd95a30",
+  "chalkbeat-tennessee": "0a347ea5f6",
+  "chalkbeat-thestartingline": "ee7b20b73c",
+  "healthbeat-atlanta": "2d2f7a083b",
+  "healthbeat-global": "094386d401",
+  "healthbeat-national": "1e542d432b",
+  "healthbeat-newyork": "1ff5df4e33",
+  "healthbeat-newyork-yle": "1ff5df4e33",
+  "votebeat-arizona": "beb821d34d",
+  "votebeat-michigan": "e3c02f29c4",
+  "votebeat-national": "76556c0afa",
+  "votebeat-pennsylvania": "fe72b00a5f",
+  "votebeat-texas": "5f5ebb3d70",
+  "votebeat-wisconsin": "f237cfb453",
+}
 
 export class NewsletterSignup extends HTMLElement {
 
@@ -67,6 +95,8 @@ export class NewsletterSignup extends HTMLElement {
   }
 
   async submit() {
+    var slug = this.dataset.slug;
+    var id = slugs[slug];
     var email = this.input.value;
     if (!email) return this.status.innerHTML = "Please provide an e-mail address.";
     var { execute } = await this.getRecaptcha();
@@ -76,6 +106,7 @@ export class NewsletterSignup extends HTMLElement {
     var data = {
       ...defaultData,
       email,
+      interest_ids: [ id ],
       "g-recaptcha-response": token
     };
     this.status.innerHTML = "Submitting your e-mail address..."
@@ -89,7 +120,7 @@ export class NewsletterSignup extends HTMLElement {
     if (response == "ok") {
       this.status.innerHTML = "Thanks! Check your e-mail to finish signing up.";
     } else {
-      this.status.innerHTML = `Sign-up failed ("${response}"), please visit <a href="https://chalkbeat.org/chicago">Chalkbeat Chicago</a> to sign up.`;
+      this.status.innerHTML = `Sign-up failed ("${response}"), please visit <a href="https://chalkbeat.org/">Chalkbeat</a> to sign up.`;
     }
   }
 }

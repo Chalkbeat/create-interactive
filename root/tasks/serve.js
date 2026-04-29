@@ -5,7 +5,7 @@ export default async function(heist) {
 
     // set up our own watcher
     var chokidar = await import("chokidar");
-    var watcher = chokidar.watch("src", {
+    var watcher = chokidar.watch(["src", "data"], {
       ignoreInitial: true,
       awaitWriteFinish: {
         stabilityThreshold: 150,
@@ -33,13 +33,14 @@ export default async function(heist) {
       if (path.match(/\.js$/)) {
         await heist.run("bundle", context);
       }
-      if (path.match(/\.html$/)) {
+      if (path.match(/\.html$/) || path.match(/^data/)) {
         await heist.run("template", context);
       }
       if (path.match(/\.css$/)) {
         await heist.run("css", context);
       }
       server.reloadFiles([path]);
+      console.log("\nTasks completed, triggering live reload...");
     }
 
     for (var e of ["change", "add", "unlink"]) {

@@ -162,6 +162,74 @@ header {
   }
 }
 
+.cb_newsletter {
+  display: grid;
+  grid-template-columns: 1fr 3fr 2fr;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 960px;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #92C5D4;
+  font-family: var(--sans);
+
+  @media (--mobile) {
+    display: block;
+  }
+
+  button {
+    display: block;
+    border: none;
+    border-radius: none;
+    width: 100%;
+    background-color: var(--bureau);
+    padding: 10px 16px;
+    color: white;
+    text-decoration: none;
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: bold;
+
+    @media (--mobile) {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    svg {
+      vertical-align: text-top;
+      height: 1.2em;
+    }
+  }
+
+  .newsletter_logo {
+    padding: 16px;
+
+    @media (--mobile) {
+      display: none;
+    }
+  }
+
+  newsletter-signup {
+    display: block;
+  }
+
+  .newsletter_form {
+    text-align: center;
+    input {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: inherit;
+    }
+  }
+
+  .status {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+}
+
 footer {
   background: var(--cream);
   padding-top: 4em;

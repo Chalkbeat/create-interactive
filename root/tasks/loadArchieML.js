@@ -22,6 +22,7 @@ export default function(heist) {
         onFieldName: t => t[0].toLowerCase() + t.slice(1)
       });
       archieml[name] = parsed;
+      console.log(`Loaded ${f} as archieml.${name}`)
     }
 
     context.archieml = archieml;
