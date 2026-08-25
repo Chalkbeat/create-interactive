@@ -323,7 +323,7 @@ The default tasks currently defined by the rig are:
 - ``serve``: Run an 11ty dev server and enable watch tasks
 - ``sheets``: Downloads from Google Sheets -> JSON
 - ``static``: Build all files
-- ``sync`: Synchronize large files with S3
+- ``sync``: Synchronize large files with S3
 - ``template``: Build HTML from content/templates
 - ``update``: Download content from remote services
 
