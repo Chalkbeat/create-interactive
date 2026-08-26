@@ -148,14 +148,14 @@ should feel free to add your own. One that may prove useful is
 processing. For example, we might import a header and footer with the
 following template::
 
-    <%= t.include("partials/_head.html") %>
+    <%= await t.include("partials/_head.html") %>
     This space intentionally left blank.
-    <%= t.include("partials/_foot.html") %>
+    <%= await t.include("partials/_foot.html") %>
 
 You can also pass data to an included template file using the second argument
 to ``t.include()``, like so::
 
-    <%= t.include("partials/_ad.html", { type: "banner" }) %>
+    <%= await t.include("partials/_ad.html", { type: "banner" }) %>
 
 This will load our ad block, sized for a "banner" slot (other common slots are "square" and "tall"). We include a number of partials as useful building blocks.
 
@@ -339,8 +339,7 @@ Similarly, let's say we just want to update the HTML for a project with fresh
 edits from Google, but not take the time to build or upload scripts, assets,
 and styles. We'll want to use the "template" meta-task, defined in the
 heistfile, which loads all our data and runs the ``build`` task to generate
-HTML against it. So for this, we might run ``heist docs sheets clean template
-publish:live``.
+HTML against it. So for this, we might run ``heist docs sheets clean template publish:live``.
 
 Finally, on some projects, it may make sense to define a validation step that
 checks data for integrity before continuing the build process (example: `the NPR
