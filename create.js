@@ -71,7 +71,6 @@ for (var [ source, dest ] of Object.entries(templated)) {
   console.log(`  - wrote ${dest}`)
 }
 
-await fs.mkdir("data", { recursive: true });
 await fs.mkdir("src/assets/synced", { recursive: true });
 
 console.log("Installing dependencies from npm...");
