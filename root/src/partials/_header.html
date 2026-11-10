@@ -1,16 +1,7 @@
 <header class="<%= json.project.vertical %>">
 
-  <%
-    let brands = {
-      "Votebeat": { domain: "votebeat.org", logo: "vb_logo.svg" },
-      "Chalkbeat": { domain: "chalkbeat.org", logo: "cb_logo.svg" },
-      "Healthbeat": { domain: "healthbeat.org", logo: "hb_logo.svg" }
-    };
-    let currentBrand = brands[json.project.vertical];
-  %>
-
-  <a href="https://<%= currentBrand.domain %>">
-    <img src="./assets/<%= currentBrand.logo %>" alt="<%= json.project.vertical %>">
+  <a href="https://<%= csv.sites[json.project.vertical].site %>.org">
+    <img src="./assets/<%= csv.sites[json.project.vertical].logo %>" alt="<%= json.project.vertical %>">
   </a>
 
 </header>
